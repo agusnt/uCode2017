@@ -6,9 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "node-parrot-drone": "^0.1.0",
     "node-sumo-client": "0.0.1",
-    "parrot-jumping-drone": "0.0.1"
   },
   "ip": "192.168.1.1"
 }
