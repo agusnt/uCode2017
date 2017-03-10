@@ -6,7 +6,8 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "node-sumo-client": "0.0.1",
+    "leapjs": "^0.6.4",
+    "node-sumo-client": "0.0.1"
   },
   "ip": "192.168.1.1"
 }
