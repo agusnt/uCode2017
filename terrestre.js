@@ -1,10 +1,10 @@
 var Cylon = require("cylon");
 var sumo = require('node-sumo-client');
 
-var LEFT_TRESHOLD = 0.2,
-    RIGHT_TRESHOLD = -0.2,
-    UP_TRESHOLD = -0.2,
-    BACK_TRESHOLD = 0.2;
+var LEFT_TRESHOLD = 0.25,
+    RIGHT_TRESHOLD = -0.25,
+    UP_TRESHOLD = -0.25,
+    BACK_TRESHOLD = 0.25;
 
 var drone = sumo.createClient();
 
