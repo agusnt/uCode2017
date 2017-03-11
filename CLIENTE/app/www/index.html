@@ -98,7 +98,7 @@ camera.setAttribute("location", "0 0 0");
 console.log(camera);
 
 var i = 200;
-var socket = io('http://10.1.30.249:5555');
+var socket = io('http://10.1.63.254:5555');
         socket.on('connect', function (){
             socket.on('hand', function (data) {
                 console.log(data.direction[0]);

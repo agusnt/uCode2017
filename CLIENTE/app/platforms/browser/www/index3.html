@@ -31,7 +31,18 @@
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
         <script type="text/javascript" src="js/socketio.js"></script>
+        <style>
+            #block_container
+            {
+                text-align:center;
+            }
+            #bloc1, #bloc2
+            {
+                display:inline;
+            }
+        </style>
     </head>
     <body>
       <canvas id="myCanvas" width="640" height="480" style="width:50%">aaa</canvas>
@@ -52,6 +63,14 @@
                 ctx2.drawImage(img, 0, 0);
             }
         });
+        function addMessage(message) {
+            var text = document.createTextNode(message),
+                el = document.createElement('li'),
+                messages = document.getElementById('messages');
+
+            el.appendChild(text);
+            messages.appendChild(el);
+        }
         </script>
     </body>
 </html>

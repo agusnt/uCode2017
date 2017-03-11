@@ -69,7 +69,7 @@
 
 
         var i = 2000;
-        var socket = io('http://10.1.30.249:5555');
+        var socket = io('http://10.1.63.254:5555');
                 socket.on('connect', function (){
                     socket.on('hand', function (data) {
                         console.log(data.direction[0]);
@@ -78,7 +78,7 @@
                         if (data.direction[0] < -0.6){
                           i--;
                           if (i<0){
-                            window.open("index.html","_self")
+                            window.open("index3.html","_self")
                           }
                         } else{
                           i = 2000;

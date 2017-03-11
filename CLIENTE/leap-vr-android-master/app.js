@@ -7,7 +7,7 @@ var leap = require('leapjs');
 var config = {
     port: 5555,
     root: __dirname+"/",
-    url: "http://10.1.30.249:5555/",
+    url: "http://10.1.63.254:5555",
     public: __dirname+"/public"
 };
 
