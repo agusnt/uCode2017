@@ -33,31 +33,9 @@
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <link rel="stylesheet" type="text/css" href="css/index.css">
         <script type="text/javascript" src="js/socketio.js"></script>
-        <script type="text/javascript" src="js/aframe.js"></script>
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.5.0/annyang.min.js"></script>
-        <script type="text/javascript" src="js/aframe-speech-command-component.min.js"></script>
 
     </head>
     <body>
-      <!--<div class="app">-->
-        <a-scene vr-mode-ui="enabled: true">
-
-
-
-          </a-box>
-          <a-plane rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
-          <a-cone radius-bottom="0.5" radius-top="0.1" color="#7faf44">
-            <a-box position="-1 0.5 1" rotation="0 45 0" width="1" height="1" depth="1"  color="#4CC3D9">
-            <a-sphere position="0 1.25 -1" radius="1.25" color="#EF2D5E"></a-sphere>
-            <a-cylinder position="1 0.75 1" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-          </a-cone>
-          <a-sky color="#ECECEC"></a-sky>
-          <a-entity id="camera" position="0 0 3.8" speech-command__show="command: show menu; type: attribute; attribute: visible; value: true;"
-              speech-command__hide="command: hide menu; type: attribute; attribute: visible; value: false;">
-            <a-camera></a-camera>
-          </a-entity>
-        </a-scene>
-      <!--</div>-->
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script>
@@ -78,7 +56,7 @@
                         if (data.direction[0] < -0.6){
                           i--;
                           if (i<0){
-                            window.open("index3.html","_self")
+                            window.open("index.html","_self")
                           }
                         } else{
                           i = 2000;
