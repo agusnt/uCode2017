@@ -6,6 +6,7 @@ var cv = require('opencv');
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var fs = require('fs');
 
 var drone = sumo.createClient();
 var video = drone.getVideoStream();
@@ -18,10 +19,15 @@ drone.connect(function() {
     drone.videoStreaming();
 });
 
+video.on("data", function (data) {
+    buf = data;
+});
+
 io.on('connection', function (socket) {
-    video.on("data", function (data) {
-        buf = data;
-        socket.emit('data', buf);
+    fs.readFile(__dirname + '/tmp/image.jpeg', function(err, buf){
+        // it's possible to embed binary data
+        // within arbitrarily-complex objects
+        socket.emit('data',  { image: true, buffer: buf.toString('base64') });
     });
 });
 
@@ -40,6 +46,9 @@ setInterval(function () {
                     return;
                 }
                 w.show(im);
+                console.log(__dirname)
+                im.save(__dirname +"/tmp/image.png");
+                console.log("save Image");
                 w.blockingWaitKey(0, 50);
             }
         });

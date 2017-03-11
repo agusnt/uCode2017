@@ -2,38 +2,29 @@
 <html>
 <head>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js'></script>
-    <script>
-        var socket = io.connect('http://localhost:3000', { 'forceNew': true });
-
-        socket.on('data', function(data) {
-            console.log(data);
-        });
-
-        function addMessage(message) {
-            var text = document.createTextNode(message),
-                el = document.createElement('li'),
-                messages = document.getElementById('messages');
-
-            el.appendChild(text);
-            messages.appendChild(el);
-        }
-    </script>
-    <script type="text/javascript">
-        function init() {
-            // Create the main viewer.
-            var viewer = new MJPEGCANVAS.Viewer({
-                divID : 'mjpeg',
-                host : 'http://user:pass@127.0.0.1:3000/',
-                width : 640,
-                height : 480,
-                topic : '/wide_stereo/left/image_color'
-            });
-        }
-    </script>
 </head>
-<body onload="init()">
+<body>
 <h1>Chetao</h1>
-<div id="mjpeg"></div>
-<img src="buffer">
+<canvas id="myCanvas" width="270" height="135" style="border:1px solid #d3d3d3;">aaa</canvas>
+<script>
+    var socket = io.connect('http://localhost:3000', { 'forceNew': true });
+    var image;
+    socket.on('data', function(data) {
+        if (data.image){
+            var img = new Image();
+            img.src = 'data:image/jpeg;base64,' + data.buffer;
+            var ctx = document.getElementById('myCanvas').getContext('2d');
+            ctx.drawImage(img, 10, 10);
+        }
+    });
+    function addMessage(message) {
+        var text = document.createTextNode(message),
+            el = document.createElement('li'),
+            messages = document.getElementById('messages');
+
+        el.appendChild(text);
+        messages.appendChild(el);
+    }
+</script>
 </body>
 </html>
