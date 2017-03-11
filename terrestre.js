@@ -23,40 +23,40 @@ Cylon.robot({
   },
 
   work: function(my) {
+    my.leapmotion.on("gesture", function(gesture) {
+        var type = gesture.type;
+        // emergency stop
+        if (type === "keyTap" || type === "screenTap") {
+            drone.animationsLongJump();
+            console.log("Jump");
+        }
+    });
     my.leapmotion.on('hand', function(payload) {
         var handOpen = !!payload.fingers.filter(function(f) {
                 return f.extended;
         }).length
-        if (handOpen)
+        if (payload.direction[1] < UP_TRESHOLD)
         {
-            if (payload.direction[1] < UP_TRESHOLD)
-            {
-                drone.forward((payload.direction[1] * -100));
-                console.log("Up");
-            } else if (payload.direction[1] > BACK_TRESHOLD)
-            {
-                drone.backward((payload.direction[1] * 100));
-                console.log("Back");
-            } else
-            {
-                drone.stop();
-                console.log("Stop");
-            }
-
-            if (payload.palmNormal[0] > LEFT_TRESHOLD)
-            {
-                drone.left((payload.palmNormal[0] * 100));
-                console.log("Left");
-            } else if (payload.palmNormal[0] < RIGHT_TRESHOLD)
-            {
-                drone.right((payload.palmNormal[0] * -100));
-                console.log("Right");
-            }
+            drone.forward((payload.direction[1] * -100));
+            console.log("Up");
+        } else if (payload.direction[1] > BACK_TRESHOLD)
+        {
+            drone.backward((payload.direction[1] * 100));
+            console.log("Back");
         } else
         {
-            drone.animationsLongJump();
-            //drone.animationsSpiral();
-            console.log("Jump");
+            drone.stop();
+            console.log("Stop");
+        }
+
+        if (payload.palmNormal[0] > LEFT_TRESHOLD)
+        {
+            drone.left((payload.palmNormal[0] * 100));
+            console.log("Left");
+        } else if (payload.palmNormal[0] < RIGHT_TRESHOLD)
+        {
+            drone.right((payload.palmNormal[0] * -100));
+            console.log("Right");
         }
         //console.log(payload.toString());
     });
