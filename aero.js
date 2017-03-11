@@ -35,11 +35,12 @@ Cylon.robot({
         if (type === "circle"){
             if(gesture.normal[2] < 0){
                 drone.animate('flipLeft');
-            }
-            if(gesture.normal[2] > 0){
+            } else if(gesture.normal[2] > 0){
                 drone.animate('flipRight');
             }
         }
+        if (type == "screenTap")
+            drone.animate('flipBack')
     });
     my.leapmotion.on('hand', function(payload) {
         // FORWARD/BACK
