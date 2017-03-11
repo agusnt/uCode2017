@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <script type="text/javascript" src="js/socketio.js"></script>
+        <script type="text/javascript" src="js/aframe.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.5.0/annyang.min.js"></script>
+        <script type="text/javascript" src="js/aframe-speech-command-component.min.js"></script>
+
+    </head>
+    <body>
+      <!--<div class="app">-->
+        <a-scene vr-mode-ui="enabled: true">
+
+
+
+          </a-box>
+          <a-plane rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+          <a-cone radius-bottom="0.5" radius-top="0.1" color="#7faf44">
+            <a-box position="-1 0.5 1" rotation="0 45 0" width="1" height="1" depth="1"  color="#4CC3D9">
+            <a-sphere position="0 1.25 -1" radius="1.25" color="#EF2D5E"></a-sphere>
+            <a-cylinder position="1 0.75 1" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+          </a-cone>
+          <a-sky color="#ECECEC"></a-sky>
+          <a-entity id="camera" position="0 0 3.8" speech-command__show="command: show menu; type: attribute; attribute: visible; value: true;"
+              speech-command__hide="command: hide menu; type: attribute; attribute: visible; value: false;">
+            <a-camera></a-camera>
+          </a-entity>
+        </a-scene>
+      <!--</div>-->
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script>
+        console.log("on device ready");
+        var box = document.querySelector('a-cone');
+        var visible = false;
+        var camera = document.querySelector("#camera");
+        console.log(camera.getAttribute('position')+"");
+
+
+        /*
+        var socket = io('http://10.1.30.249:6437');
+                socket.on('connect', function (){
+                    socket.on('hand', function (data) {
+                        //cube.rotation.x += 0.01;
+                        box.setAttribute('position', (data.direction[0] * 2) + " " + (data.direction[1] * 4) + " " + (data.direction[2] * 2) );
+                    });
+                });
+        */
+
+        var ws;
+
+// Support both the WebSocket and MozWebSocket objects
+if ((typeof(WebSocket) == 'undefined') &&
+    (typeof(MozWebSocket) != 'undefined')) {
+  WebSocket = MozWebSocket;
+}
+
+// Create the socket with event handlers
+function connectToWebSocket() {
+  // Create and open the socket
+  ws = new WebSocket("ws://localhost:6437/v6.json");
+
+  // On successful connection
+  ws.onopen = function(event) {
+    var enableMessage = JSON.stringify({enableGestures: true});
+    ws.send(enableMessage); // Enable gestures
+    var backgroundMessage = JSON.stringify({background: true});
+    ws.send(backgroundMessage); // Get frames in background
+    console.log("open");
+  };
+
+var i = 20;
+
+  // On message received
+  ws.onmessage = function(event) {
+      var obj = JSON.parse(event.data);
+      var str = JSON.stringify(obj, undefined, 2);
+      if(obj.id){
+        box.setAttribute('position', (obj.hands[0].direction[0] * 4) + " " + (obj.hands[0].direction[1] * 4) + " " + (obj.hands[0].direction[2] * 4) );
+
+      } else {
+          console.log("message " + event.data);
+      }
+  };
+
+  // On socket close
+  ws.onclose = function(event) {
+    ws = null;
+    console.log("close");
+  }
+
+  // On socket error
+  ws.onerror = function(event) {
+    console.log("error");
+  };
+}
+
+connectToWebSocket();
+        </script>
+    </body>
+</html>
