@@ -3,7 +3,9 @@
  */
 var sumo = require('node-sumo-client');
 var cv = require('opencv');
-
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 var drone = sumo.createClient();
 var video = drone.getVideoStream();
@@ -19,6 +21,7 @@ drone.connect(function() {
 video.on("data", function (data) {
     buf = data;
     console.log(buf);
+    socket.broadcast.emit(buf);
 });
 
 setInterval(function () {
