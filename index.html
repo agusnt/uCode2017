@@ -4,9 +4,10 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js'></script>
     <script>
         var socket = io.connect('http://localhost:3000', { 'forceNew': true });
-
+        var buffer;
         socket.on('data', function(data) {
             console.log(data);
+            buffer = data;
         });
 
         function addMessage(message) {
@@ -18,22 +19,25 @@
             messages.appendChild(el);
         }
     </script>
-    <script type="text/javascript">
-        function init() {
-            // Create the main viewer.
-            var viewer = new MJPEGCANVAS.Viewer({
-                divID : 'mjpeg',
-                host : 'http://user:pass@127.0.0.1:3000/',
-                width : 640,
-                height : 480,
-                topic : '/wide_stereo/left/image_color'
-            });
-        }
+    <script src="js/dash.all.js"></script>
+    <script>
+    // setup the video element and attach it to the Dash player
+    function setupVideo() {
+      var context = new Dash.di.DashContext();
+      var player = new MediaPlayer(context);
+                      player.startup();
+                      player.attachView(document.querySelector("#videoplayer"));
+                      player.attachVideoContainer(buffer);
+    }
     </script>
 </head>
-<body onload="init()">
-<h1>Chetao</h1>
-<div id="mjpeg"></div>
-<img src="buffer">
+<body onload="setupVideo()">
+<style>
+video {
+  width: 80%;
+  height: 80%;
+}
+</style>
+<video id="videoplayer" controls></video>
 </body>
 </html>
