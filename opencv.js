@@ -7,6 +7,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
+var socket;
 
 var drone = sumo.createClient();
 var video = drone.getVideoStream();
@@ -26,12 +27,9 @@ video.on("data", function (data) {
     buf = data;
 });
 
-io.on('connection', function (socket) {
-    fs.readFile(__dirname + '/tmp/image.jpeg', function(err, buf){
-        // it's possible to embed binary data
-        // within arbitrarily-complex objects
-        socket.emit('data',  { image: true, buffer: buf.toString('base64') });
-    });
+io.on('connection', function (sock) {
+    socket = sock
+    console.log("Conexion")
 });
 
 setInterval(function () {
@@ -49,9 +47,12 @@ setInterval(function () {
                     return;
                 }
                 w.show(im);
-                console.log(__dirname)
-                im.save(__dirname +"/tmp/image.png");
-                console.log("save Image");
+                im.save(__dirname +"/tmp/image.jpeg");
+                fs.readFile(__dirname + '/tmp/image.jpeg', function(err, buf){
+                    // it's possible to embed binary data
+                    // within arbitrarily-complex objects
+                    socket.emit('data',  { image: true, buffer: buf.toString('base64') });
+                });
                 w.blockingWaitKey(0, 50);
             }
         });

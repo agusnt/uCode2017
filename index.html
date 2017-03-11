@@ -5,16 +5,17 @@
 </head>
 <body>
 <h1>Chetao</h1>
-<canvas id="myCanvas" width="270" height="135" style="border:1px solid #d3d3d3;">aaa</canvas>
+<canvas id="myCanvas" width="1200" height="1200" style="border:1px solid #d3d3d3;">aaa</canvas>
 <script>
     var socket = io.connect('http://localhost:3000', { 'forceNew': true });
     var image;
     socket.on('data', function(data) {
+        console.log("gatitos");
         if (data.image){
             var img = new Image();
             img.src = 'data:image/jpeg;base64,' + data.buffer;
             var ctx = document.getElementById('myCanvas').getContext('2d');
-            ctx.drawImage(img, 10, 10);
+            ctx.drawImage(img, 0, 0);
         }
     });
     function addMessage(message) {
