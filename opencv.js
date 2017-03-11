@@ -13,6 +13,9 @@ var video = drone.getVideoStream();
 var buf = null;
 var w = new cv.NamedWindow("Video", 0);
 
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/index.html');
+});
 
 drone.connect(function() {
     stream = drone.getVideoStream();
