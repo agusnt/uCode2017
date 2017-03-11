@@ -1,0 +1,53 @@
+//var sumo = require('node-sumo-client');
+//
+//var drone = sumo.createClient();
+//
+//drone.connect(function() {
+//    drone.postureJumper();
+//    drone.forward(50);
+//
+//    setTimeout(function() {
+//        drone.right(50);
+//    }, 1000);
+//});
+
+var Cylon = require("cylon");
+var TURN_TRESHOLD = 0.2,
+    TURN_SPEED_FACTOR = 2.0;
+
+var handStartPosition = [],
+    handStartDirection = [];
+
+var handWasClosedInLastFrame = false;
+
+Cylon.robot({
+  connections: {
+    leapmotion: { adaptor: 'leapmotion' }
+  },
+
+  devices: {
+    leapmotion: { driver: 'leapmotion' }
+  },
+
+  work: function(my) {
+    my.leapmotion.on('hand', function(payload) {
+        if (payload.direction[1] < -0.1)
+        {
+            console.log("Up");
+        } else if (payload.direction[1] > 0.1)
+        {
+            console.log("Back");
+        }
+
+        if (payload.palmNormal[0] > 0.1)
+        {
+            console.log("Left");
+        } else if (payload.palmNormal[0] < -0.1)
+        {
+            console.log("Right");
+        }
+
+        //console.log(payload.toString());
+    });
+  }
+}).start();

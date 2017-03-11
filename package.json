@@ -6,8 +6,10 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "cylon-leapmotion": "^0.21.0",
     "leapjs": "^0.6.4",
-    "node-sumo-client": "0.0.1"
+    "node-sumo-client": "0.0.1",
+    "sleep": "^5.1.0"
   },
   "ip": "192.168.1.1"
 }
