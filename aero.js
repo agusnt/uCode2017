@@ -14,6 +14,7 @@ const drone = new Drone({
 drone.on('connected', () => console.log("Let's Go"));
 
 var flightParams = {};
+var notUse = true;
 
 Cylon.robot({
   connections: {
@@ -31,68 +32,84 @@ Cylon.robot({
         if (type === "keyTap") {
             console.log("KeyTap");
             drone.takeoffOrLand();
+            notUse = true;
         }
         if (type === "circle"){
+            console.log("circle");
             if(gesture.normal[2] < 0){
                 drone.animate('flipLeft');
+                notUse = false;
             } else if(gesture.normal[2] > 0){
                 drone.animate('flipRight');
+                notUse = false;
             }
         }
-        if (type == "screenTap")
-            drone.animate('flipBack')
     });
-    my.leapmotion.on('hand', function(payload) {
-        // FORWARD/BACK
-        if (payload.direction[1] < UP_TRESHOLD)
-        {
-            flightParams.pitch = 50;
-            flightParams.roll = 0;
-            flightParams.altitude = 0;
-            console.log("Forward");
-        } else if (payload.direction[1] > BACK_TRESHOLD)
-        {
-            flightParams.pitch = -50;
-            flightParams.roll = 0;
-            flightParams.altitude = 0;
-            console.log("Back");
-        } else if (payload.palmNormal[0] > LEFT_TRESHOLD)
-        {
-            flightParams.pitch = 0;
-            flightParams.roll = -50;
-            flightParams.altitude = 0;
-            console.log("Left");
-        } else if (payload.palmNormal[0] < RIGHT_TRESHOLD)
-        {
-            flightParams.pitch = 0;
-            flightParams.roll = 50;
-            flightParams.altitude = 0;
-            console.log("Right");
-        } else
-        {
-            flightParams.pitch = 0;
-            flightParams.roll = 0;
-            flightParams.altitude = 0;
-        }
-        //console.log(payload.palmPosition[1])
-        // UP/DOWN
-        if (payload.palmPosition[1] > 300)
-        {
-            flightParams.pitch = 0;
-            flightParams.roll = 0;
-            flightParams.altitude = 50;
-            console.log("Up");
-        } else if (payload.palmPosition[1] < 130)
-        {
-            flightParams.pitch = 0;
-            flightParams.roll = 0;
-            flightParams.altitude = -50;
-            console.log("Down");
-        } else
-        {
-            flightParams.altitude = 0;
-        }
-        drone.setFlightParams(flightParams);
-        //console.log(payload.toString());
-    });
+    if (notUse)
+    {
+        my.leapmotion.on('hand', function(payload) {
+            var handOpen = !!payload.fingers.filter(function(f) {
+                return f.extended;
+            }).length;
+            // FORWARD/BACK
+            if (payload.direction[1] < UP_TRESHOLD)
+            {
+                flightParams.pitch = 50;
+                flightParams.roll = 0;
+                flightParams.altitude = 0;
+                console.log("Forward");
+            } else if (payload.direction[1] > BACK_TRESHOLD)
+            {
+                flightParams.pitch = -50;
+                flightParams.roll = 0;
+                flightParams.altitude = 0;
+                console.log("Back");
+            } else if (payload.palmNormal[0] > LEFT_TRESHOLD)
+            {
+                flightParams.pitch = 0;
+                flightParams.roll = -50;
+                flightParams.altitude = 0;
+                console.log("Left");
+            } else if (payload.palmNormal[0] < RIGHT_TRESHOLD)
+            {
+                flightParams.pitch = 0;
+                flightParams.roll = 50;
+                flightParams.altitude = 0;
+                console.log("Right");
+            } else
+            {
+                flightParams.pitch = 0;
+                flightParams.roll = 0;
+                flightParams.altitude = 0;
+            }
+            //console.log(payload.palmPosition[1])
+            // UP/DOWN
+            if (payload.palmPosition[1] > 300)
+            {
+                flightParams.pitch = 0;
+                flightParams.roll = 0;
+                flightParams.altitude = 50;
+                console.log("Up");
+            } else if (payload.palmPosition[1] < 130)
+            {
+                flightParams.pitch = 0;
+                flightParams.roll = 0;
+                flightParams.altitude = -50;
+                console.log("Down");
+            } else
+            {
+                flightParams.altitude = 0;
+            }
+            
+            if (!handOpen)
+            {
+                drone.animate('flipBack');
+                console.log('FlipBack');
+            }
+            drone.setFlightParams(flightParams);
+            //console.log(payload.toString());
+        });
+    }
+    notUse = true;
+  }
 }).start();

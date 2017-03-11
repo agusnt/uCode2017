@@ -39,9 +39,9 @@ Cylon.robot({
     my.leapmotion.on("gesture", function(gesture) {
         var type = gesture.type;
         // emergency stop
-        if (type === "keyTap" || type === "screenTap") {
-            drone.animationsLongJump();
-            console.log("Jump");
+        if (type === "keyTap") {
+            drone.animationsSpin();
+            console.log("Spin");
         }
     });
     my.leapmotion.on('hand', function(payload) {
@@ -70,6 +70,15 @@ Cylon.robot({
         {
             drone.right((payload.palmNormal[0] * -100));
             console.log("Right");
+        }
+        if (payload.palmPosition[1] > 300)
+        {
+            drone.animationsLongJump();
+            console.log("Jump");
+        } else if (payload.palmPosition[1] < 130)
+        {
+            drone.animationsSlowShake()
+            console.log("SlowShake");
         }
         //console.log(payload.toString());
     });
