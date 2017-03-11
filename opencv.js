@@ -18,10 +18,11 @@ drone.connect(function() {
     drone.videoStreaming();
 });
 
-video.on("data", function (data) {
-    buf = data;
-    console.log(buf);
-    socket.broadcast.emit(buf);
+io.on('connection', function (socket) {
+    video.on("data", function (data) {
+        buf = data;
+        socket.emit('data', buf);
+    });
 });
 
 setInterval(function () {
@@ -46,3 +47,7 @@ setInterval(function () {
         console.log(e);
     }
 }, 100);
+
+http.listen(3000, function(){
+    console.log('Listening on *:3000')
+});

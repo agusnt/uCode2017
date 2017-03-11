@@ -1,5 +1,6 @@
 var Cylon = require("cylon");
 var sumo = require('node-sumo-client');
+var cv = require('opencv');
 
 var LEFT_TRESHOLD = 0.25,
     RIGHT_TRESHOLD = -0.25,
@@ -7,13 +8,22 @@ var LEFT_TRESHOLD = 0.25,
     BACK_TRESHOLD = 0.255;
 
 var drone = sumo.createClient();
+var video = drone.getVideoStream();
+var buf = null;
+var w = new cv.NamedWindow("Video", 0);
 
-drone.connect(function()
-{
+
+drone.connect(function() {
+    stream = drone.getVideoStream();
+    drone.videoStreaming();
     console.log("Drone OK");
-    // drone.on("battery", function(data){
-    //     console.log(data);
-    // });
+    drone.on("battery", function(data){
+        console.log(data);
+    });
+});
+
+video.on("data", function (data) {
+    buf = data;
 });
 
 Cylon.robot({
@@ -65,3 +75,26 @@ Cylon.robot({
     });
   }
 }).start();
+
+setInterval(function () {
+    if (buf == null) {
+        return;
+    }
+
+    try {
+        cv.readImage(buf, function (err, im) {
+            if (err) {
+                console.log(err);
+            } else {
+                if (im.width() < 1 || im.height() < 1) {
+                    console.log("no width or height");
+                    return;
+                }
+                w.show(im);
+                w.blockingWaitKey(0, 50);
+            }
+        });
+    } catch (e) {
+        console.log(e);
+    }
+}, 100);
