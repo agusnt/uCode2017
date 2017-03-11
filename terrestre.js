@@ -4,13 +4,16 @@ var sumo = require('node-sumo-client');
 var LEFT_TRESHOLD = 0.25,
     RIGHT_TRESHOLD = -0.25,
     UP_TRESHOLD = -0.25,
-    BACK_TRESHOLD = 0.25;
+    BACK_TRESHOLD = 0.255;
 
 var drone = sumo.createClient();
 
 drone.connect(function()
 {
-    console.log("Drone OK")
+    console.log("Drone OK");
+    // drone.on("battery", function(data){
+    //     console.log(data);
+    // });
 });
 
 Cylon.robot({
