@@ -39,7 +39,7 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script>
-        var socket = io.connect('http://10.3.11.83:3000', { 'forceNew': true });
+        var socket = io.connect('localhost:3000', { 'forceNew': true });
         var image;
         socket.on('data', function(data) {
             console.log("gatitos");
@@ -52,6 +52,13 @@
                 ctx2.drawImage(img, 0, 0);
             }
         });
+        function addMessage(message) {
+            var text = document.createTextNode(message),
+                el = document.createElement('li'),
+                messages = document.getElementById('messages');
+            el.appendChild(text);
+            messages.appendChild(el);
+        }
         </script>
     </body>
 </html>

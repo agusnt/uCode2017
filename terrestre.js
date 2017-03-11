@@ -17,7 +17,7 @@ var buf = null;
 var w = new cv.NamedWindow("Video", 0);
 
 app.get('/', function(req, res){
-    res.sendFile(__dirname + 'CLIENTE/app/www/index3.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
 drone.connect(function() {
