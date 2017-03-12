@@ -5,6 +5,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
+var xbox = require('xbox-controller-node');
 
 var LEFT_TRESHOLD = 0.25,
     RIGHT_TRESHOLD = -0.25,
@@ -34,62 +35,106 @@ video.on("data", function (data) {
 });
 
 Cylon.robot({
-  connections: {
-    leapmotion: { adaptor: 'leapmotion' }
-  },
+    connections: {
+        leapmotion: { adaptor: 'leapmotion' }
+    },
 
-  devices: {
-    leapmotion: { driver: 'leapmotion' }
-  },
+    devices: {
+        leapmotion: { driver: 'leapmotion' }
+    },
 
-  work: function(my) {
-    my.leapmotion.on("gesture", function(gesture) {
-        var type = gesture.type;
-        // emergency stop
-        if (type === "keyTap") {
-            drone.animationsSpin();
-            console.log("Spin");
-        }
-    });
-    my.leapmotion.on('hand', function(payload) {
-        var handOpen = !!payload.fingers.filter(function(f) {
+    work: function(my) {
+        my.leapmotion.on("gesture", function(gesture) {
+            var type = gesture.type;
+            // emergency stop
+            if (type === "keyTap") {
+                drone.animationsSpin();
+                console.log("Spin");
+            }
+        });
+        my.leapmotion.on('hand', function(payload) {
+            var handOpen = !!payload.fingers.filter(function(f) {
                 return f.extended;
-        }).length
-        if (payload.direction[1] < UP_TRESHOLD)
-        {
-            drone.forward((payload.direction[1] * -100));
-            console.log("Up");
-        } else if (payload.direction[1] > BACK_TRESHOLD)
-        {
-            drone.backward((payload.direction[1] * 100));
-            console.log("Back");
-        } else
-        {
-            drone.stop();
-            console.log("Stop");
-        }
+            }).length
+            if (payload.direction[1] < UP_TRESHOLD)
+            {
+                drone.forward((payload.direction[1] * -100));
+                console.log("Up");
+            } else if (payload.direction[1] > BACK_TRESHOLD)
+            {
+                drone.backward((payload.direction[1] * 100));
+                console.log("Back");
+            } else
+            {
+                drone.stop();
+                console.log("Stop");
+            }
 
-        if (payload.palmNormal[0] > LEFT_TRESHOLD)
-        {
-            drone.left((payload.palmNormal[0] * 100));
-            console.log("Left");
-        } else if (payload.palmNormal[0] < RIGHT_TRESHOLD)
-        {
-            drone.right((payload.palmNormal[0] * -100));
-            console.log("Right");
-        }
-        if (payload.palmPosition[1] > 300)
-        {
+            if (payload.palmNormal[0] > LEFT_TRESHOLD)
+            {
+                drone.left((payload.palmNormal[0] * 100));
+                console.log("Left");
+            } else if (payload.palmNormal[0] < RIGHT_TRESHOLD)
+            {
+                drone.right((payload.palmNormal[0] * -100));
+                console.log("Right");
+            }
+            if (payload.palmPosition[1] > 300)
+            {
+                drone.animationsLongJump();
+                console.log("Jump");
+            // } else if (payload.palmPosition[1] < 130)
+            // {
+            //     drone.animationsSlowShake();
+            //     console.log("SlowShake");
+            }
+            //console.log(payload.toString());
+        });
+        xbox.on('a', function () {
+
+            console.log('[A] button press');
+        });
+
+        xbox.on('b', function () {
+            drone.postureJumper(function(){
+                drone.animationsHighJump();
+            });
+            console.log('[B] button press');
+        });
+
+        xbox.on('y', function () {
+            drone.animationsSpin();
+            console.log('[Y] button press');
+        });
+
+        xbox.on('x', function () {
             drone.animationsLongJump();
-            console.log("Jump");
-        } else if (payload.palmPosition[1] < 130)
-        {
-            drone.animationsSlowShake()
-            console.log("SlowShake");
-        }
-        //console.log(payload.toString());
-    });
-  }
+            console.log('[X] button press');
+        });
+        xbox.on('start', function () {
+            drone.animationsStop();
+            console.log('[Start] button press');
+        });
+        xbox.on('leftstickLeft', function () {
+            drone.left(100);
+            console.log('Moving [LEFTSTICK] LEFT');
+        });
+
+        xbox.on('leftstickRight', function () {
+            drone.right(100);
+            console.log('Moving [LEFTSTICK] RIGHT');
+        });
+
+        xbox.on('leftstickDown', function () {
+            drone.backward(100);
+            console.log('Moving [LEFTSTICK] DOWN');
+        });
+
+        xbox.on('leftstickUp', function () {
+            drone.forward(100);
+            console.log('Moving [LEFTSTICK] UP');
+        });
+    }
 }).start();
 
 io.on('connection', function (socket) {
