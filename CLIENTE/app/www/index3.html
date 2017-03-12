@@ -32,6 +32,7 @@
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <script type="text/javascript" src="js/socketio.js"></script>
+        <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js'></script>-->
     </head>
     <body>
       <canvas id="myCanvas" width="640" height="480" style="width:50%">aaa</canvas>
@@ -39,7 +40,7 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script>
-        var socket = io.connect('localhost:3000', { 'forceNew': true });
+        var socket = io.connect('http://localhost:3000', { 'forceNew': true });
         var image;
         socket.on('data', function(data) {
             console.log("gatitos");

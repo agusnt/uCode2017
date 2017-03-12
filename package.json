@@ -1,12 +1,12 @@
 {
   "name": "Ucode",
-  "version": "0.0.1",
-  "description": "",
+  "version": "1.0.0",
+  "description": "MiniParrot VR Motion",
   "scripts": {
-    "start": "node app.js"
+    "mambo": "node aero.js",
+    "jett": "node terrestre.js",
   },
   "dependencies": {
-    "aframe-canvas": "0.0.6",
     "cylon-leapmotion": "^0.21.0",
     "express": "^4.15.2",
     "leapjs": "^0.6.4",
@@ -16,5 +16,5 @@
     "socket.io": "^1.7.3",
     "xbox-controller-node": "^1.6.0"
   },
-  "ip": "192.168.1.1"
+  "ip": "192.168.2.1"
 }

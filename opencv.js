@@ -1,5 +1,5 @@
 /**
- * Created by alex on 11/03/17.
+ * Fichero de pruebas de Streaming con el drone Jett
  */
 var sumo = require('node-sumo-client');
 var cv = require('opencv');

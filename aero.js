@@ -1,3 +1,7 @@
+/*
+ * Script de control del Parrot Mambo
+ */
+
 const Drone = require('parrot-minidrone');
 const Cylon = require("cylon");
 
