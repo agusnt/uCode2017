@@ -39,3 +39,36 @@ jspm_packages
 node_modules/
 .idea
 
+# ==================== CORDOVA ======================
+# Mac
+.DS_Store
+
+# iOS
+app/platforms/ios/build/
+app/platforms/ios/www/
+app/platforms/ios/cordova/console.log
+*.xcuserdatad
+
+# android
+CLIENTE/app/platforms/android/assets/www
+CLIENTE/app/platforms/android/bin
+CLIENTE/app/platforms/android/gen
+CLIENTE/app/platforms/android/local.properties
+CLIENTE/app/platforms/android/ant-build
+CLIENTE/app/platforms/android/ant-gen
+CLIENTE/app/platforms/android/CordovaLib/ant-build
+CLIENTE/app/platforms/android/CordovaLib/ant-gen
+CLIENTE/app/platforms/android/CordovaLib/bin
+CLIENTE/app/platforms/android/CordovaLib/gen
+CLIENTE/app/platforms/android/CordovaLib/local.properties
+
+# wp8
+CLIENTE/app/platforms/wp8/bin
+CLIENTE/app/platforms/wp8/obj
+CLIENTE/app/platforms/wp8/www
+CLIENTE/app/platforms/wp8/.staging
+CLIENTE/app/platforms/wp8/*.suo
+CLIENTE/app/platforms/wp8/*.csproj.user
+
+# res
+CLIENTE/app/resources/signing
