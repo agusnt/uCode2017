@@ -1,3 +1,7 @@
+/*
+ * Script de Control del Parrot Minidrone Jett
+ */
+
 var Cylon = require("cylon");
 var sumo = require('node-sumo-client');
 var cv = require('opencv');
