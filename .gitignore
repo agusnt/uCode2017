@@ -50,25 +50,25 @@ app/platforms/ios/cordova/console.log
 *.xcuserdatad
 
 # android
-app/platforms/android/assets/www
-app/platforms/android/bin
-app/platforms/android/gen
-app/platforms/android/local.properties
-app/platforms/android/ant-build
-app/platforms/android/ant-gen
-app/platforms/android/CordovaLib/ant-build
-app/platforms/android/CordovaLib/ant-gen
-app/platforms/android/CordovaLib/bin
-app/platforms/android/CordovaLib/gen
-app/platforms/android/CordovaLib/local.properties
+CLIENTE/app/platforms/android/assets/www
+CLIENTE/app/platforms/android/bin
+CLIENTE/app/platforms/android/gen
+CLIENTE/app/platforms/android/local.properties
+CLIENTE/app/platforms/android/ant-build
+CLIENTE/app/platforms/android/ant-gen
+CLIENTE/app/platforms/android/CordovaLib/ant-build
+CLIENTE/app/platforms/android/CordovaLib/ant-gen
+CLIENTE/app/platforms/android/CordovaLib/bin
+CLIENTE/app/platforms/android/CordovaLib/gen
+CLIENTE/app/platforms/android/CordovaLib/local.properties
 
 # wp8
-app/platforms/wp8/bin
-app/platforms/wp8/obj
-app/platforms/wp8/www
-app/platforms/wp8/.staging
-app/platforms/wp8/*.suo
-app/platforms/wp8/*.csproj.user
+CLIENTE/app/platforms/wp8/bin
+CLIENTE/app/platforms/wp8/obj
+CLIENTE/app/platforms/wp8/www
+CLIENTE/app/platforms/wp8/.staging
+CLIENTE/app/platforms/wp8/*.suo
+CLIENTE/app/platforms/wp8/*.csproj.user
 
 # res
-app/resources/signing
+CLIENTE/app/resources/signing
